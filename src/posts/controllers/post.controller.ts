@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes } from
 import { PostService } from "../services/post.service";
 import z from "zod";
 import { ZodValidationPipe } from "src/shared/pipe/zod-validation.pipe";
+import { IPost } from "../schemas/models/post.interface";
 
 const createPostSchema = z.object({
   title: z.string(),
@@ -40,7 +41,7 @@ export class PostController {
     @Param("id") id: string,
     @Body(new ZodValidationPipe(updatePostSchema)) post: UpdatePost
   ) {
-    return this.postService.updatePost(id, post);
+    return this.postService.updatePost(id, post as IPost);
   }
   
     @Delete(':id')
