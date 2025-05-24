@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { PostService } from "../services/post.service";
-import { async } from "rxjs";
 import { IPost } from "../schemas/models/post.interface";
 
 @Controller('posts')
@@ -23,8 +22,8 @@ export class PostController {
     return this.postService.updatePost(id, post);
   }
   
-  @Delete(':id')
-  deletePost(@Param() id: string) {
+    @Delete(':id')
+    deletePost(@Param('id') id: string) {
     return this.postService.deletePost(id);
   }
 }
