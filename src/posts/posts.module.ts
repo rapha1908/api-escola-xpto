@@ -7,6 +7,7 @@ import { PostSchema } from './schemas/post.schema';
 import { PostMongooseRepository } from './repositories/mongoose/post.mongoose.repository';
 import { PostRepository } from './repositories/post.repository';
 import { PostService } from './services/post.service';
+import { PostController } from './controllers/post.controller';
 
 @Module({
   imports: [
@@ -23,6 +24,9 @@ import { PostService } from './services/post.service';
       useClass: PostMongooseRepository,
     },
     PostService,
+  ],
+  controllers: [
+    PostController,
   ],
 })
 export class PostsModule {}
