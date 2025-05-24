@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, UsePipes } from "@nestjs/common";
 import { PostService } from "../services/post.service";
 import z from "zod";
 import { ZodValidationPipe } from "src/shared/pipe/zod-validation.pipe";
 import { IPost } from "../schemas/models/post.interface";
+import { AuthGuard } from "src/shared/guards/auth.guard";
+import { LoggingInterceptor } from "src/shared/interceptor/logging.interceptor";
 
 const createPostSchema = z.object({
   title: z.string(),
@@ -18,10 +20,12 @@ const updatePostSchema = z.object({
 type CreatePost = z.infer<typeof createPostSchema>;
 type UpdatePost = z.infer<typeof updatePostSchema>;
 
+@UseInterceptors(LoggingInterceptor)
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
- @Get()
+ @UseGuards(AuthGuard)
+  @Get()
   async getAllPosts(@Query("limit") limit: number, @Query("page") page: number) {
     return this.postService.getAllPosts(limit, page);
   }
